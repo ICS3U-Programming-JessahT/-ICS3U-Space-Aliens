@@ -4,8 +4,8 @@
 # Date: January 10, 2023
 # Space aliens
 
-import ugame
 import stage
+import ugame
 
 
 def game_scene():
