@@ -6,6 +6,7 @@
 
 import stage
 import ugame
+import constants
 
 
 def game_scene():
@@ -14,34 +15,45 @@ def game_scene():
     image_bank_sprites = stage.Bank.from_bmp16("space_aliens.bmp")
 
     # sheet
-    background = stage.Grid(image_bank_background, 10, 8)
-    person = stage.Sprite(image_bank_sprites, 5, 75, 66)
+    background = stage.Grid(
+        image_bank_background, constants.SCREEN_GRID_X, constants.SCREEN_GRID_Y
+    )
+    person = stage.Sprite(image_bank_sprites, 5, 75, 110)
 
     # display the image
-    game = stage.Stage(ugame.display, 60)
+    game = stage.Stage(ugame.display, constants.FPS)
     game.layers = [person] + [background]
     game.render_block()
     # loop the game
     while True:
         # user input, buttons on pyBadge
+        # passes is used so the only buttons but left and right work while playing
         keys = ugame.buttons.get_pressed()
 
         if keys & ugame.K_X:
-            print("A")
+            pass
         if keys & ugame.K_O:
-            print("B")
+            pass
         if keys & ugame.K_START:
-            print("Start")
+            pass
         if keys & ugame.K_SELECT:
-            print("Select")
+            pass
         if keys & ugame.K_RIGHT:
-            person.move(person.x + 1, person.y)
+            # used so when sprite goes right it doesn't go out of bounds
+            if person.x <= constants.SCREEN_X - constants.SPRITE_SIZE:
+                person.move(person.x + 1, person.y)
+            else:
+                person.move(constants.SCREEN_X - constants.SPRITE_SIZE, person.y)
         if keys & ugame.K_LEFT:
-            person.move(person.x - 1, person.y)
+            # used so when sprite goes left it doesn't go out of bounds
+            if person.x >= 0:
+                person.move(person.x - 1, person.y)
+            else:
+                person.move(0, person.y)
         if keys & ugame.K_UP:
-            person.move(person.x, person.y - 1)
+            pass
         if keys & ugame.K_DOWN:
-            person.move(person.x, person.y + 1)
+            pass
         # game logic
         # redraw sprite
         game.render_sprites([person])
